@@ -11,7 +11,7 @@ How to Use
 Step 1:
 Download or clone this repo by using the link below:
 
-https://github.com/nthanhthan/ecovelo_app.git
+https://github.com/nthanhthan/garden_smart.git
 
 
 Step 2:
