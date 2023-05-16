@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "249233384443",
+    "firebase_url": "https://doan--iot-dut-default-rtdb.firebaseio.com",
+    "project_id": "doan--iot-dut",
+    "storage_bucket": "doan--iot-dut.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249233384443:android:40bf27b0260bbee26e615e",
+        "android_client_info": {
+          "package_name": "com.app.garden"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249233384443-g8poskh4vkv3pq1nlra86qckjkokv7ra.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoa-9TLkp2B74kXlKzK9YCUVRRuBTc4U4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249233384443-g8poskh4vkv3pq1nlra86qckjkokv7ra.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "249233384443-3go3grgd9fegltq2nvonmhv23n7t5atv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.garden"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
