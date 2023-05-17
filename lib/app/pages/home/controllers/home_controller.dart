@@ -77,4 +77,11 @@ class HomeController extends GetxController
       Get.offAllNamed(Routes.signIn);
     });
   }
+
+  void roomClick(int index) {
+    Get.toNamed(
+      Routes.detailRoom,
+      arguments: index,
+    );
+  }
 }

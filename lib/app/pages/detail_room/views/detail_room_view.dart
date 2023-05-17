@@ -14,7 +14,7 @@ class DetailRoomView extends GetView<DetailRoomController> {
   }
 
   void _controlClick() {
-    Get.offNamed(Routes.control);
+    Get.offNamed(Routes.control, arguments: controller.index);
   }
 
   Widget _mainBody(BuildContext context) {
@@ -24,8 +24,8 @@ class DetailRoomView extends GetView<DetailRoomController> {
         backgroundColor: AppColors.main.shade300,
         iconTheme: const IconThemeData(color: AppColors.white),
         centerTitle: true,
-        title: const Text(
-          "Room 1",
+        title: Text(
+          controller.room ?? "",
         ),
       ),
       bottomNavigationBar: _sliderWidget(context),
@@ -93,7 +93,8 @@ class DetailRoomView extends GetView<DetailRoomController> {
   Widget _getRadialGauge(String type, double value, double left) {
     return Stack(children: [
       SfRadialGauge(
-        animationDuration: 3000,
+        animationDuration: 2000,
+        enableLoadingAnimation: true,
         title: GaugeTitle(
           text: "",
           textStyle: AppTextStyles.subHeading1(),

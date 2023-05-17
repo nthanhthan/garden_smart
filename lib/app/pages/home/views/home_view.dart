@@ -12,8 +12,8 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  void _roomOnClick() {
-    Get.toNamed(Routes.detailRoom);
+  void _roomOnClick(int index) {
+    controller.roomClick(index);
   }
 
   void _chapterClick(int index, ChapterModel chapter) {
@@ -74,21 +74,25 @@ class HomeView extends GetView<HomeController> {
             context,
             AssetsConst.room1,
             "Room 1",
+            0,
           ),
           const SizedBox(width: 80),
           _mainItem(
             context,
             AssetsConst.room2,
             "Room 2",
+            1,
           ),
         ],
       ),
     );
   }
 
-  Widget _mainItem(BuildContext context, String icon, String name) {
+  Widget _mainItem(BuildContext context, String icon, String name, int index) {
     return GestureDetector(
-      onTap: _roomOnClick,
+      onTap: () {
+        _roomOnClick(index);
+      },
       child: Column(
         children: [
           SvgPicture.asset(

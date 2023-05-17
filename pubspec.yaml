@@ -97,6 +97,7 @@ dependencies:
   percent_indicator: ^4.2.3
   action_slider: ^0.6.1
   flutter_switch: ^0.3.2
+  firebase_database: ^10.0.0
 
   #dev
   f_logs: ^2.0.1
