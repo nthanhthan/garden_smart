@@ -28,6 +28,7 @@ class ControlView extends GetView<DetailRoomController> {
           child: InkWell(
             onTap: () {
               Get.offNamed(Routes.detailRoom, arguments: controller.index);
+ 
             },
             child: Icon(
               Icons.arrow_back_ios_new,

@@ -9,6 +9,12 @@ class DetailRoomController extends GetxController {
   bool get switchVoice => _switchVoice.value;
   late ControlModelResp controlModelResp;
 
+  Rx<DeviceModel?> temp = DeviceModel().obs;
+  Rx<DeviceModel?> doamdat = DeviceModel().obs;
+  Rx<DeviceModel?> hum = DeviceModel().obs;
+  Rx<DeviceModel?> light = DeviceModel().obs;
+  Rx<DeviceModel?> ph = DeviceModel().obs;
+
   RxList<ControlModel> listControl = <ControlModel>[].obs;
   Future<void> switchVoiceOnClicked(
       bool value, ControlModel controlModel) async {
@@ -29,10 +35,15 @@ class DetailRoomController extends GetxController {
       index = Get.arguments as int;
       if (index == 0) {
         room = "KHU_1";
-      }else{
-         room = "KHU_2";
+      } else {
+        room = "KHU_2";
       }
     }
+    initTemp();
+    initHum();
+    initDoamdat();
+    initLight();
+    initPH();
     initControl();
     super.onInit();
   }
@@ -69,6 +80,97 @@ class DetailRoomController extends GetxController {
         listControl.addAll([auto, fan, pump, light]);
         // ignore: empty_catches
       } catch (e) {}
+    });
+  }
+
+  void initTemp() {
+    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/temp');
+    LogUtil.d('$room/temp');
+    dataRoom.onValue.listen((event) {
+      final data = event.snapshot.value;
+      try {
+        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
+        temp.value = DeviceModel.fromJson(valueDevice.values.last);
+        LogUtil.d(temp.value?.value ?? "loi");
+
+        // ignore: empty_catches
+      } catch (e) {
+        LogUtil.d(data.toString());
+      }
+    });
+  }
+
+  void initDoamdat() {
+    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/doamdat');
+    LogUtil.d('$room/doamdat');
+    dataRoom.onValue.listen((event) {
+      final data = event.snapshot.value;
+      try {
+        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
+        doamdat.value = DeviceModel.fromJson(valueDevice.values.last);
+        if (doamdat.value != null && doamdat.value!.value != null) {
+          doamdat.value?.value = doamdat.value!.value! / 100;
+        }
+        LogUtil.d(doamdat.value?.value ?? "loi");
+
+        // ignore: empty_catches
+      } catch (e) {
+        LogUtil.d(data.toString());
+      }
+    });
+  }
+
+  void initHum() {
+    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/hum');
+    LogUtil.d('$room/hum');
+    dataRoom.onValue.listen((event) {
+      final data = event.snapshot.value;
+      try {
+        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
+        hum.value = DeviceModel.fromJson(valueDevice.values.last);
+        if (hum.value != null && hum.value!.value != null) {
+          hum.value?.value = hum.value!.value! / 100;
+        }
+        LogUtil.d(hum.value?.value ?? "loi");
+
+        // ignore: empty_catches
+      } catch (e) {
+        LogUtil.d(data.toString());
+      }
+    });
+  }
+
+  void initLight() {
+    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/light');
+    LogUtil.d('$room/light');
+    dataRoom.onValue.listen((event) {
+      final data = event.snapshot.value;
+      try {
+        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
+        light.value = DeviceModel.fromJson(valueDevice.values.last);
+        LogUtil.d(light.value?.value ?? "loi");
+
+        // ignore: empty_catches
+      } catch (e) {
+        LogUtil.d(data.toString());
+      }
+    });
+  }
+
+  void initPH() {
+    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/ph');
+    LogUtil.d('$room/ph');
+    dataRoom.onValue.listen((event) {
+      final data = event.snapshot.value;
+      try {
+        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
+        ph.value = DeviceModel.fromJson(valueDevice.values.last);
+        LogUtil.d(ph.value?.value ?? "loi");
+
+        // ignore: empty_catches
+      } catch (e) {
+        LogUtil.d(data.toString());
+      }
     });
   }
 
