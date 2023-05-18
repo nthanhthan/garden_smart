@@ -21,13 +21,14 @@ class ControlView extends GetView<DetailRoomController> {
       backgroundColor: AppColors.defaultBackground,
       appBar: AppBar(
         backgroundColor: AppColors.main.shade300,
-        title: const Text("Room 1"),
+        title: Text(controller.room ?? ""),
         centerTitle: true,
         leading: Container(
           margin: const EdgeInsets.all(12.0),
           child: InkWell(
             onTap: () {
-              Get.offNamed(Routes.detailRoom);
+              Get.offNamed(Routes.detailRoom, arguments: controller.index);
+ 
             },
             child: Icon(
               Icons.arrow_back_ios_new,

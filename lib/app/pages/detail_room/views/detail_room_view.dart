@@ -14,7 +14,7 @@ class DetailRoomView extends GetView<DetailRoomController> {
   }
 
   void _controlClick() {
-    Get.offNamed(Routes.control);
+    Get.offNamed(Routes.control, arguments: controller.index);
   }
 
   Widget _mainBody(BuildContext context) {
@@ -24,8 +24,8 @@ class DetailRoomView extends GetView<DetailRoomController> {
         backgroundColor: AppColors.main.shade300,
         iconTheme: const IconThemeData(color: AppColors.white),
         centerTitle: true,
-        title: const Text(
-          "Room 1",
+        title: Text(
+          controller.room ?? "",
         ),
       ),
       bottomNavigationBar: _sliderWidget(context),
@@ -36,22 +36,26 @@ class DetailRoomView extends GetView<DetailRoomController> {
             children: [
               Row(
                 children: [
-                  Expanded(
-                    child: _percentWidget(
-                      context,
-                      AppColors.secondary.shade300,
-                      "Air Humidity",
-                      0.6,
-                      AppColors.grey.shade300,
+                  Obx(
+                    () => Expanded(
+                      child: _percentWidget(
+                        context,
+                        AppColors.secondary.shade300,
+                        "Air Humidity",
+                        controller.hum.value?.value ?? 0,
+                        AppColors.grey.shade300,
+                      ),
                     ),
                   ),
-                  Expanded(
-                    child: _percentWidget(
-                      context,
-                      AppColors.lightPurple,
-                      "Soil moisture",
-                      0.3,
-                      AppColors.grey.shade300,
+                  Obx(
+                    () => Expanded(
+                      child: _percentWidget(
+                        context,
+                        AppColors.lightPurple,
+                        "Soil moisture",
+                        controller.doamdat.value?.value ?? 0,
+                        AppColors.grey.shade300,
+                      ),
                     ),
                   ),
                 ],
@@ -61,26 +65,32 @@ class DetailRoomView extends GetView<DetailRoomController> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: _getRadialGauge(
-                        S.of(Get.context!).temperature,
-                        60,
-                        50,
+                    Obx(
+                      () => Expanded(
+                        child: _getRadialGauge(
+                          S.of(Get.context!).temperature,
+                          controller.temp.value?.value ?? 0,
+                          50,
+                        ),
                       ),
                     ),
-                    Expanded(
-                      child: _getRadialGauge(
-                        "Light",
-                        40,
-                        80,
+                    Obx(
+                      () => Expanded(
+                        child: _getRadialGauge(
+                          "Light",
+                          controller.light.value?.value ?? 0,
+                          80,
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
               Transform.translate(
                 offset: const Offset(0, -70),
-                child: _phWidget(),
+                child: Obx(
+                  () => _phWidget(controller.ph.value?.value ?? 0),
+                ),
               ),
               // _sliderWidget(context),
             ],
@@ -93,7 +103,8 @@ class DetailRoomView extends GetView<DetailRoomController> {
   Widget _getRadialGauge(String type, double value, double left) {
     return Stack(children: [
       SfRadialGauge(
-        animationDuration: 3000,
+        animationDuration: 2000,
+        enableLoadingAnimation: true,
         title: GaugeTitle(
           text: "",
           textStyle: AppTextStyles.subHeading1(),
@@ -101,23 +112,23 @@ class DetailRoomView extends GetView<DetailRoomController> {
         axes: <RadialAxis>[
           RadialAxis(
             minimum: 0,
-            maximum: 150,
+            maximum: 100,
             ranges: <GaugeRange>[
               GaugeRange(
                   startValue: 0,
-                  endValue: 50,
+                  endValue: 30,
                   color: Colors.green,
                   startWidth: 10,
                   endWidth: 10),
               GaugeRange(
-                  startValue: 50,
-                  endValue: 100,
+                  startValue: 30,
+                  endValue: 70,
                   color: Colors.orange,
                   startWidth: 10,
                   endWidth: 10),
               GaugeRange(
-                  startValue: 100,
-                  endValue: 150,
+                  startValue: 70,
+                  endValue: 100,
                   color: Colors.red,
                   startWidth: 10,
                   endWidth: 10)
@@ -126,7 +137,7 @@ class DetailRoomView extends GetView<DetailRoomController> {
             annotations: <GaugeAnnotation>[
               GaugeAnnotation(
                 widget: Text(
-                  value.toString(),
+                  value.toStringAsFixed(1),
                   style: AppTextStyles.heading1(),
                 ),
                 angle: 90,
@@ -180,7 +191,7 @@ class DetailRoomView extends GetView<DetailRoomController> {
     );
   }
 
-  Widget _phWidget() {
+  Widget _phWidget(double value) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -205,9 +216,9 @@ class DetailRoomView extends GetView<DetailRoomController> {
                 color: Colors.green,
               ),
             ],
-            markerPointers: const [
+            markerPointers: [
               LinearShapePointer(
-                value: 8,
+                value: value,
                 width: 20,
                 height: 20,
                 shapeType: LinearShapePointerType.invertedTriangle,
@@ -217,7 +228,7 @@ class DetailRoomView extends GetView<DetailRoomController> {
           ),
           const SizedBox(height: 10),
           Text(
-            "PH = 8",
+            "PH = $value",
             style: AppTextStyles.body1(),
           ),
         ],
