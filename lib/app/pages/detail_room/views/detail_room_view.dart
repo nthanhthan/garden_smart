@@ -42,7 +42,7 @@ class DetailRoomView extends GetView<DetailRoomController> {
                         context,
                         AppColors.secondary.shade300,
                         "Air Humidity",
-                        controller.hum.value?.value ?? 0,
+                        controller.controlModelResp.hum ?? 0,
                         AppColors.grey.shade300,
                       ),
                     ),
@@ -53,23 +53,32 @@ class DetailRoomView extends GetView<DetailRoomController> {
                         context,
                         AppColors.lightPurple,
                         "Soil moisture",
-                        controller.doamdat.value?.value ?? 0,
+                        controller.controlModelResp.doamdat ?? 0,
                         AppColors.grey.shade300,
                       ),
                     ),
                   ),
                 ],
               ),
+              Obx(
+                () => _percentWidget(
+                  context,
+                  AppColors.success,
+                  "Rain moisture",
+                  controller.controlModelResp.rain ?? 0,
+                  AppColors.grey.shade300,
+                ),
+              ),
               Transform.translate(
-                offset: const Offset(0, -60),
+                offset: const Offset(0, -80),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Obx(
-                      () => Expanded(
-                        child: _getRadialGauge(
+                    Expanded(
+                      child: Obx(
+                        () => _getRadialGauge(
                           S.of(Get.context!).temperature,
-                          controller.temp.value?.value ?? 0,
+                          controller.controlModelResp.temp ?? 0,
                           50,
                         ),
                       ),
@@ -78,20 +87,21 @@ class DetailRoomView extends GetView<DetailRoomController> {
                       () => Expanded(
                         child: _getRadialGauge(
                           "Light",
-                          controller.light.value?.value ?? 0,
+                          controller.controlModelResp.light ?? 0,
                           80,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
               Transform.translate(
                 offset: const Offset(0, -70),
                 child: Obx(
-                  () => _phWidget(controller.ph.value?.value ?? 0),
+                  () => _phWidget(controller.controlModelResp.ph ?? 0),
                 ),
               ),
+
               // _sliderWidget(context),
             ],
           ),

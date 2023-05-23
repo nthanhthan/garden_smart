@@ -7,12 +7,24 @@ part of 'device_model.dart';
 // **************************************************************************
 
 DeviceModel _$DeviceModelFromJson(Map<String, dynamic> json) => DeviceModel(
-      time: json['time'] as String?,
-      value: (json['value'] as num?)?.toDouble(),
+      control: json['control'] == null
+          ? null
+          : ControlModelResp.fromJson(json['control'] as Map<String, dynamic>),
+      doamdat: (json['doamdat'] as num?)?.toDouble(),
+      hum: (json['hum'] as num?)?.toDouble(),
+      light: (json['light'] as num?)?.toDouble(),
+      ph: (json['ph'] as num?)?.toDouble(),
+      temp: (json['temp'] as num?)?.toDouble(),
+      rain: (json['rain'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$DeviceModelToJson(DeviceModel instance) =>
     <String, dynamic>{
-      'time': instance.time,
-      'value': instance.value,
+      'control': instance.control,
+      'doamdat': instance.doamdat,
+      'hum': instance.hum,
+      'light': instance.light,
+      'ph': instance.ph,
+      'temp': instance.temp,
+      'rain': instance.rain,
     };
