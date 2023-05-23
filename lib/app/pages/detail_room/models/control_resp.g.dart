@@ -12,6 +12,7 @@ ControlModelResp _$ControlModelRespFromJson(Map<String, dynamic> json) =>
       fan: json['fan'] as bool?,
       light: json['light'] as bool?,
       pump: json['pump'] as bool?,
+      curtain: json['curtain'] as bool?,
     );
 
 Map<String, dynamic> _$ControlModelRespToJson(ControlModelResp instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$ControlModelRespToJson(ControlModelResp instance) =>
       'fan': instance.fan,
       'light': instance.light,
       'pump': instance.pump,
+      'curtain': instance.curtain,
     };

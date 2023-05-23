@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cntt": MessageLookupByLibrary.simpleMessage("My Garden"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "control": MessageLookupByLibrary.simpleMessage("Go To Control"),
+        "curtain": MessageLookupByLibrary.simpleMessage("Curtain"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "erEmailOrPasswordInvalid": MessageLookupByLibrary.simpleMessage(

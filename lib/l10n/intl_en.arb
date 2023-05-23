@@ -37,5 +37,6 @@
     "fan": "Fan",
     "pump": "Pump",
     "light": "Light",
-    "auto": "Auto"
+    "auto": "Auto",
+    "curtain": "Curtain"
 }

@@ -7,7 +7,14 @@ class ControlModelResp {
   bool? fan;
   bool? light;
   bool? pump;
-  ControlModelResp({this.auto, this.fan, this.light, this.pump});
+  bool? curtain;
+  ControlModelResp({
+    this.auto,
+    this.fan,
+    this.light,
+    this.pump,
+    this.curtain,
+  });
   factory ControlModelResp.fromJson(Map<String, dynamic> json) =>
       _$ControlModelRespFromJson(json);
   Map<String, dynamic> toJson() => _$ControlModelRespToJson(this);

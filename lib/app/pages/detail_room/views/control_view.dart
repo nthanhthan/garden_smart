@@ -28,7 +28,6 @@ class ControlView extends GetView<DetailRoomController> {
           child: InkWell(
             onTap: () {
               Get.offNamed(Routes.detailRoom, arguments: controller.index);
- 
             },
             child: Icon(
               Icons.arrow_back_ios_new,
@@ -56,7 +55,7 @@ class ControlView extends GetView<DetailRoomController> {
   Widget _itemControl(BuildContext context, ControlModel control) {
     Color colorActive;
     Color bg;
-    if (control.index == 0) {
+    if (control.index == 0 || control.index == 4) {
       colorActive = AppColors.main.shade300;
       bg = AppColors.main.shade100;
     } else if (control.index == 1) {

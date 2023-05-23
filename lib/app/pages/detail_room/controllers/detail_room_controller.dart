@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:foodapp/app/core.dart';
 
@@ -7,13 +6,9 @@ class DetailRoomController extends GetxController {
   final RxBool _switchVoice = true.obs;
   set switchVoice(bool value) => _switchVoice.value = value;
   bool get switchVoice => _switchVoice.value;
-  late ControlModelResp controlModelResp;
-
-  Rx<DeviceModel?> temp = DeviceModel().obs;
-  Rx<DeviceModel?> doamdat = DeviceModel().obs;
-  Rx<DeviceModel?> hum = DeviceModel().obs;
-  Rx<DeviceModel?> light = DeviceModel().obs;
-  Rx<DeviceModel?> ph = DeviceModel().obs;
+  final Rx<DeviceModel> _controlModelResp = DeviceModel().obs;
+  set controlModelResp(DeviceModel value) => _controlModelResp.value = value;
+  DeviceModel get controlModelResp => _controlModelResp.value;
 
   RxList<ControlModel> listControl = <ControlModel>[].obs;
   Future<void> switchVoiceOnClicked(
@@ -39,138 +34,66 @@ class DetailRoomController extends GetxController {
         room = "KHU_2";
       }
     }
-    initTemp();
-    initHum();
-    initDoamdat();
-    initLight();
-    initPH();
-    initControl();
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    initControl();
+    super.onReady();
+  }
+
   void initControl() {
-    DatabaseReference starCountRef =
-        FirebaseDatabase.instance.ref('$room/control');
+    DatabaseReference starCountRef = FirebaseDatabase.instance.ref('$room');
     starCountRef.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
       try {
         final Map<String, dynamic> value = jsonDecode(jsonEncode(data));
-        controlModelResp = ControlModelResp.fromJson(value);
+        controlModelResp = DeviceModel.fromJson(value);
+        if (controlModelResp.hum != null) {
+          controlModelResp.hum = controlModelResp.hum! / 100;
+        }
+        if (controlModelResp.doamdat != null) {
+          controlModelResp.doamdat = controlModelResp.doamdat! / 100;
+        }
+        if (controlModelResp.rain != null) {
+          controlModelResp.rain = controlModelResp.rain! / 100;
+        }
         ControlModel auto = ControlModel(
           index: 0,
-          value: controlModelResp.auto ?? false,
+          value: controlModelResp.control?.auto ?? false,
           name: S.current.auto,
         );
         ControlModel fan = ControlModel(
           index: 1,
-          value: controlModelResp.fan ?? false,
+          value: controlModelResp.control?.fan ?? false,
           name: S.current.fan,
         );
         ControlModel pump = ControlModel(
           index: 2,
-          value: controlModelResp.pump ?? false,
+          value: controlModelResp.control?.pump ?? false,
           name: S.current.pump,
         );
         ControlModel light = ControlModel(
           index: 3,
-          value: controlModelResp.light ?? false,
+          value: controlModelResp.control?.light ?? false,
           name: S.current.light,
         );
+        ControlModel curtain = ControlModel(
+          index: 4,
+          value: controlModelResp.control?.curtain ?? false,
+          name: S.current.curtain,
+        );
         listControl.clear();
-        listControl.addAll([auto, fan, pump, light]);
+        listControl.addAll([
+          auto,
+          fan,
+          pump,
+          light,
+          curtain,
+        ]);
         // ignore: empty_catches
       } catch (e) {}
-    });
-  }
-
-  void initTemp() {
-    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/temp');
-    LogUtil.d('$room/temp');
-    dataRoom.onValue.listen((event) {
-      final data = event.snapshot.value;
-      try {
-        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
-        temp.value = DeviceModel.fromJson(valueDevice.values.last);
-        LogUtil.d(temp.value?.value ?? "loi");
-
-        // ignore: empty_catches
-      } catch (e) {
-        LogUtil.d(data.toString());
-      }
-    });
-  }
-
-  void initDoamdat() {
-    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/doamdat');
-    LogUtil.d('$room/doamdat');
-    dataRoom.onValue.listen((event) {
-      final data = event.snapshot.value;
-      try {
-        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
-        doamdat.value = DeviceModel.fromJson(valueDevice.values.last);
-        if (doamdat.value != null && doamdat.value!.value != null) {
-          doamdat.value?.value = doamdat.value!.value! / 100;
-        }
-        LogUtil.d(doamdat.value?.value ?? "loi");
-
-        // ignore: empty_catches
-      } catch (e) {
-        LogUtil.d(data.toString());
-      }
-    });
-  }
-
-  void initHum() {
-    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/hum');
-    LogUtil.d('$room/hum');
-    dataRoom.onValue.listen((event) {
-      final data = event.snapshot.value;
-      try {
-        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
-        hum.value = DeviceModel.fromJson(valueDevice.values.last);
-        if (hum.value != null && hum.value!.value != null) {
-          hum.value?.value = hum.value!.value! / 100;
-        }
-        LogUtil.d(hum.value?.value ?? "loi");
-
-        // ignore: empty_catches
-      } catch (e) {
-        LogUtil.d(data.toString());
-      }
-    });
-  }
-
-  void initLight() {
-    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/light');
-    LogUtil.d('$room/light');
-    dataRoom.onValue.listen((event) {
-      final data = event.snapshot.value;
-      try {
-        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
-        light.value = DeviceModel.fromJson(valueDevice.values.last);
-        LogUtil.d(light.value?.value ?? "loi");
-
-        // ignore: empty_catches
-      } catch (e) {
-        LogUtil.d(data.toString());
-      }
-    });
-  }
-
-  void initPH() {
-    DatabaseReference dataRoom = FirebaseDatabase.instance.ref('$room/ph');
-    LogUtil.d('$room/ph');
-    dataRoom.onValue.listen((event) {
-      final data = event.snapshot.value;
-      try {
-        final Map<String, dynamic> valueDevice = jsonDecode(jsonEncode(data));
-        ph.value = DeviceModel.fromJson(valueDevice.values.last);
-        LogUtil.d(ph.value?.value ?? "loi");
-
-        // ignore: empty_catches
-      } catch (e) {
-        LogUtil.d(data.toString());
-      }
     });
   }
 
@@ -188,6 +111,9 @@ class DetailRoomController extends GetxController {
         break;
       case 3:
         key = "light";
+        break;
+      case 4:
+        key = "curtain";
         break;
     }
     DatabaseReference starCountRef =
