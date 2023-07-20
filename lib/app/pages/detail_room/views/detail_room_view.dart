@@ -60,13 +60,16 @@ class DetailRoomView extends GetView<DetailRoomController> {
                   ),
                 ],
               ),
-              Obx(
-                () => _percentWidget(
-                  context,
-                  AppColors.success,
-                  "Rain moisture",
-                  controller.controlModelResp.rain ?? 0,
-                  AppColors.grey.shade300,
+              Visibility(
+                visible: controller.index == 0,
+                child: Obx(
+                  () => _percentWidget(
+                    context,
+                    AppColors.success,
+                    "Rain moisture",
+                    controller.controlModelResp.rain ?? 0,
+                    AppColors.grey.shade300,
+                  ),
                 ),
               ),
               Transform.translate(
@@ -95,10 +98,13 @@ class DetailRoomView extends GetView<DetailRoomController> {
                   ],
                 ),
               ),
-              Transform.translate(
-                offset: const Offset(0, -70),
-                child: Obx(
-                  () => _phWidget(controller.controlModelResp.ph ?? 0),
+              Visibility(
+                visible: controller.index == 0,
+                child: Transform.translate(
+                  offset: const Offset(0, -70),
+                  child: Obx(
+                    () => _phWidget(controller.controlModelResp.ph ?? 0),
+                  ),
                 ),
               ),
 

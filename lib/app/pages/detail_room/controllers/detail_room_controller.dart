@@ -90,8 +90,10 @@ class DetailRoomController extends GetxController {
           fan,
           pump,
           light,
-          curtain,
         ]);
+        if (index == 0) {
+          listControl.add(curtain);
+        }
         // ignore: empty_catches
       } catch (e) {}
     });
